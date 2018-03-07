@@ -1,1 +1,1 @@
-include ':app', ':lame'
+include ':sample', ':lame', ':ame'

@@ -14,6 +14,7 @@ android {
         externalNativeBuild {
             cmake {
                 cFlags "-DSTDC_HEADERS"
+                targets 'mp3lame'
             }
         }
 

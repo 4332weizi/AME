@@ -31,3 +31,5 @@ build/
 *.apk
 
 .externalNativeBuild
+
+dist/

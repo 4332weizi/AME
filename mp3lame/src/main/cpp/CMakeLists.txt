@@ -5,7 +5,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../jniLibs/${ANDROID_AB
 aux_source_directory(${CMAKE_HOME_DIRECTORY} LAME_SRC_LIST)
 aux_source_directory(${CMAKE_HOME_DIRECTORY}/vector LAME_VECTOR_SRC_LIST)
 
-add_library( lame
+add_library( mp3lame
 			 SHARED
 			 ${LAME_SRC_LIST}
 			 ${LAME_VECTOR_SRC_LIST})

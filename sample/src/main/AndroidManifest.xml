@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AmeLiteActivity" />
+        <activity android:name=".AmeActivity"></activity>
     </application>
 
 </manifest>

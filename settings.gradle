@@ -1,1 +1,1 @@
-include ':sample', ':mp3lame', ':ame'
+include ':sample', ':mp3lame', ':ame', ':ame-lite'

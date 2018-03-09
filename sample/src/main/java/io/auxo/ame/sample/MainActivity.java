@@ -1,24 +1,39 @@
 package io.auxo.ame.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
-import io.auxo.ame.Mp3Encoder;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextView;
+    private Button mAmeLite;
+    private Button mAme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextView = findViewById(R.id.main_hello);
+        mAmeLite = findViewById(R.id.main_ame_lite);
+        mAme = findViewById(R.id.main_ame);
 
-        String version = new Mp3Encoder().getLameVersion();
+        mAmeLite.setOnClickListener(this);
+        mAme.setOnClickListener(this);
+    }
 
-        mTextView.setText("LAME version : " + version);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_ame_lite:
+                startActivity(new Intent(this, AmeLiteActivity.class));
+                break;
+            case R.id.main_ame:
+                startActivity(new Intent(this, AmeActivity.class));
+                break;
+            default:
+                break;
+        }
     }
 }

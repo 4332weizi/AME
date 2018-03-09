@@ -1,4 +1,4 @@
-package io.auxo.ame;
+package io.auxo.ame.lite;
 
 /**
  * Mp3Encoder
@@ -10,7 +10,7 @@ package io.auxo.ame;
 public class Mp3Encoder {
 
     static {
-        System.loadLibrary("ame");
+        System.loadLibrary("ame-lite");
     }
 
     public Mp3Encoder() {

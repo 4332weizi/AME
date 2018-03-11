@@ -1,11 +1,3 @@
-//
-// Created by ZHAOWEIWEI on 2018/2/8.
-//
-
-#ifndef LAMEANDROID_JNI_UTIL_H
-#define LAMEANDROID_JNI_UTIL_H
-
-
 #include <jni.h>
 #include <android/log.h>
 
@@ -47,6 +39,3 @@ jdouble
 invoke_method_get_jdouble(JNIEnv *env, jobject obj, char *objClassName, char *methodName);
 
 char *parse_jstring(JNIEnv *env, jstring jstr);
-
-
-#endif //LAMEANDROID_JNI_UTIL_H

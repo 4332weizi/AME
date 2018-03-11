@@ -28,6 +28,10 @@ char *parse_jstring(JNIEnv *env, jstring jstr) {
     }
 
     (*env)->ReleaseByteArrayElements(env, barr, ba, 0);
+    (*env)->DeleteLocalRef(env, methodID);
+    (*env)->DeleteLocalRef(env, barr);
+    (*env)->DeleteLocalRef(env, length);
+    (*env)->DeleteLocalRef(env, *ba);
 
     return rtn;
 }
@@ -36,36 +40,48 @@ jmethodID
 get_method_id(JNIEnv *env, char *className, char *methodName,
               char *signature) {
     jclass clazz = (*env)->FindClass(env, className);
-    return (*env)->GetMethodID(env, clazz, methodName, signature);
+    jmethodID id = (*env)->GetMethodID(env, clazz, methodName, signature);
+    (*env)->DeleteLocalRef(env, clazz);
+    return id;
 }
 
 jobject
 invoke_method_get_jobject(JNIEnv *env, jobject obj, char *objClassName, char *methodName,
                           char *signature) {
     jmethodID methodID = get_method_id(env, objClassName, methodName, signature);
-    return (*env)->CallObjectMethod(env, obj, methodID);
+    jobject result = (*env)->CallObjectMethod(env, obj, methodID);
+    (*env)->DeleteLocalRef(env, methodID);
+    return result;
 }
 
 jboolean
 invoke_method_get_jboolean(JNIEnv *env, jobject obj, char *objClassName, char *methodName) {
     jmethodID methodID = get_method_id(env, objClassName, methodName, SIGNATURE_BOOLEAN);
-    return (*env)->CallBooleanMethod(env, obj, methodID);
+    jboolean result = (*env)->CallBooleanMethod(env, obj, methodID);
+    (*env)->DeleteLocalRef(env, methodID);
+    return result;
 }
 
 jint
 invoke_method_get_jint(JNIEnv *env, jobject obj, char *objClassName, char *methodName) {
     jmethodID methodID = get_method_id(env, objClassName, methodName, SIGNATURE_INT);
-    return (*env)->CallIntMethod(env, obj, methodID);
+    jint result = (*env)->CallIntMethod(env, obj, methodID);
+    (*env)->DeleteLocalRef(env, methodID);
+    return result;
 }
 
 jfloat
 invoke_method_get_jfloat(JNIEnv *env, jobject obj, char *objClassName, char *methodName) {
     jmethodID methodID = get_method_id(env, objClassName, methodName, SIGNATURE_FLOAT);
-    return (*env)->CallFloatMethod(env, obj, methodID);
+    jfloat result = (*env)->CallFloatMethod(env, obj, methodID);
+    (*env)->DeleteLocalRef(env, methodID);
+    return result;
 }
 
 jdouble
 invoke_method_get_jdouble(JNIEnv *env, jobject obj, char *objClassName, char *methodName) {
     jmethodID methodID = get_method_id(env, objClassName, methodName, SIGNATURE_DOUBLE);
-    return (*env)->CallDoubleMethod(env, obj, methodID);
+    jdouble result = (*env)->CallDoubleMethod(env, obj, methodID);
+    (*env)->DeleteLocalRef(env, methodID);
+    return result;
 }

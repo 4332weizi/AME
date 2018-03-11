@@ -1,32 +1,14 @@
 #include <jni.h>
 #include <malloc.h>
 #include <string.h>
+#include "mp3_encoder.h"
 #include "lame.h"
 #include "jni_util.h"
+#include "callback.h"
 
-void callback_start(JNIEnv *env, jobject callback) {
-    if (callback != NULL) {
-
-    }
-}
-
-void callback_progress(JNIEnv *env, jobject callback, long total, long progress) {
-    if (callback != NULL) {
-
-    }
-}
-
-void callback_complete(JNIEnv *env, jobject callback) {
-    if (callback != NULL) {
-
-    }
-}
-
-void callback_error(JNIEnv *env, jobject callback) {
-    if (callback != NULL) {
-
-    }
-}
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 long fsize(FILE *fp) {
     long n;
@@ -40,11 +22,18 @@ long fsize(FILE *fp) {
 
 void parse_options(JNIEnv *env, lame_global_flags *gf, jobject options) {
     if (options != NULL) {
-        lame_set_out_samplerate(gf, 0);
-        lame_set_brate(gf, 0);
-        lame_set_quality(gf, 0);
-        lame_set_num_channels(gf, 0);
-        lame_set_mode(gf, 0);
+#define OPTIONS_CLASS_NAME "io.auxo.ame.lite.Mp3Encoder$Options"
+        int sample_rate = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getSampleRate");
+        lame_set_out_samplerate(gf, sample_rate);
+        int bit_rate = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getBitRate");
+        lame_set_brate(gf, bit_rate);
+        int quality = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getQuality");
+        lame_set_quality(gf, quality);
+        int num_channels = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME,
+                                                  "getNumChannels");
+        lame_set_num_channels(gf, num_channels);
+        int mode = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getMode");
+        lame_set_mode(gf, mode);
     }
 }
 
@@ -57,7 +46,7 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
     int ret = lame_init_params(gf);
     // LAME参数初始化失败
     if (ret != 0) {
-        callback_error(env, callback);
+        on_error(env, callback);
         return;
     }
 
@@ -86,7 +75,7 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
         long insize = fsize(fin);
 
         // 回调开始转码
-        callback_start(env, callback);
+        on_start(env, callback);
 
         do {
 
@@ -104,7 +93,7 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
                 lame_encode_flush(gf, mp3_buffer, 8192);
             }
 
-            callback_progress(env, callback, insize, total);
+            on_progress(env, callback, insize, total);
         } while (read != 0);
 
         LOGI("convert  finish");
@@ -114,53 +103,20 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
         fclose(fin);
         fclose(fout);
         // 回调转码成功
-        callback_complete(env, callback);
+        on_complete(env, callback);
     } else {
         LOGE("Can not found file %s", src);
-        callback_error(env, callback);
+        on_error(env, callback);
     }
 }
 
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
  * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder$Options;Lio/auxo/ame/lite/Mp3Encoder$Callback;)V
  */
 JNIEXPORT void JNICALL
-Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2
-        (JNIEnv *env, jclass clazz, jstring in, jstring out) {
-    encode(env, clazz, in, out, NULL, NULL);
-}
-
-/*
- * Class:     io_auxo_ame_lite_Mp3Encoder
- * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Callback;)V
- */
-JNIEXPORT void JNICALL
-Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Callback_2
-        (JNIEnv *env, jclass clazz, jstring in, jstring out, jobject callback) {
-    encode(env, clazz, in, out, NULL, callback);
-}
-
-/*
- * Class:     io_auxo_ame_lite_Mp3Encoder
- * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Options;)V
- */
-JNIEXPORT void JNICALL
-Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Options_2
-        (JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options) {
-    encode(env, clazz, in, out, options, NULL);
-}
-
-/*
- * Class:     io_auxo_ame_lite_Mp3Encoder
- * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Options;Lio/auxo/ame/lite/Mp3Encoder/Callback;)V
- */
-JNIEXPORT void JNICALL
-Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Options_2Lio_auxo_ame_lite_Mp3Encoder_Callback_2
+Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_00024Options_2Lio_auxo_ame_lite_Mp3Encoder_00024Callback_2
         (JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options, jobject callback) {
     encode(env, clazz, in, out, options, callback);
 }
@@ -174,3 +130,7 @@ JNIEXPORT jstring JNICALL Java_io_auxo_ame_lite_Mp3Encoder_getLameVersion
         (JNIEnv *env, jobject obj) {
     return (*env)->NewStringUTF(env, get_lame_version());
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif

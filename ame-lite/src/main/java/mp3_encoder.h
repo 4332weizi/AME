@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/lang/String;Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2
-        (JNIEnv *, jclass, jstring, jstring);
+  (JNIEnv *, jclass, jstring, jstring);
 
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_Strin
  * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Callback;)V
  */
 JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Callback_2
-        (JNIEnv *, jclass, jstring, jstring, jobject);
+  (JNIEnv *, jclass, jstring, jstring, jobject);
 
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_Strin
  * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Options;)V
  */
 JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Options_2
-        (JNIEnv *, jclass, jstring, jstring, jobject);
+  (JNIEnv *, jclass, jstring, jstring, jobject);
 
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_Strin
  * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Options;Lio/auxo/ame/lite/Mp3Encoder/Callback;)V
  */
 JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_Options_2Lio_auxo_ame_lite_Mp3Encoder_Callback_2
-        (JNIEnv *, jclass, jstring, jstring, jobject, jobject);
+  (JNIEnv *, jclass, jstring, jstring, jobject, jobject);
 
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_Strin
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_auxo_ame_lite_Mp3Encoder_getLameVersion
-        (JNIEnv *, jclass);
+  (JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }

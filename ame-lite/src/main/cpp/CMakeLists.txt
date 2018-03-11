@@ -19,7 +19,11 @@ target_include_directories( ame-lite
                             PRIVATE
                             ${DIST_DIR}/mp3lame/include )
 
-target_link_libraries( ame-lite mp3lame )
+find_library( log-lib log )
+
+target_link_libraries( ame-lite
+                       mp3lame
+                       ${log-lib} )
 
 # 设定动态链接库输出路径
 set_target_properties( ame-lite

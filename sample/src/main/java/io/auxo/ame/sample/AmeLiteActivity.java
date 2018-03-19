@@ -36,7 +36,7 @@ public class AmeLiteActivity extends AppCompatActivity {
 
                     @Override
                     public void onProgress(long total, long current) {
-                        Log.i("AmeLiteActivity", "onProgress: tatal->" + total + " current->" + current);
+                        Log.i("AmeLiteActivity", "onProgress: total->" + total + " current->" + current);
                     }
 
                     @Override

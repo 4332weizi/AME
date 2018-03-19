@@ -82,7 +82,7 @@ public class Mp3Encoder {
     public interface Callback {
         void onStart();
 
-        void onProgress(long tatal, long current);
+        void onProgress(long total, long current);
 
         void onComplete();
 

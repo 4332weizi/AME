@@ -5,36 +5,19 @@
 #include "lame.h"
 #include "jni_util.h"
 #include "callback.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "parse.h"
 
 long fsize(FILE *fp) {
     long n;
-    fpos_t fpos;  //当前位置
-    fgetpos(fp, &fpos);  //获取当前位置
+    // 当前位置
+    fpos_t fpos;
+    // 获取当前位置
+    fgetpos(fp, &fpos);
     fseek(fp, 0, SEEK_END);
     n = ftell(fp);
-    fsetpos(fp, &fpos);  //恢复之前的位置
+    // 恢复之前的位置
+    fsetpos(fp, &fpos);
     return n;
-}
-
-void parse_options(JNIEnv *env, lame_global_flags *gf, jobject options) {
-    if (options != NULL) {
-#define OPTIONS_CLASS_NAME "io.auxo.ame.lite.Mp3Encoder$Options"
-        int sample_rate = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getSampleRate");
-        lame_set_out_samplerate(gf, sample_rate);
-        int bit_rate = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getBitRate");
-        lame_set_brate(gf, bit_rate);
-        int quality = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getQuality");
-        lame_set_quality(gf, quality);
-        int num_channels = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME,
-                                                  "getNumChannels");
-        lame_set_num_channels(gf, num_channels);
-        int mode = invoke_method_get_jint(env, options, OPTIONS_CLASS_NAME, "getMode");
-        lame_set_mode(gf, mode);
-    }
 }
 
 void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options, jobject callback) {
@@ -70,9 +53,9 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
 
         int read;
         int write; //代表读了多少个次 和写了多少次
-        long total = 0; // 当前读的wav文件的byte数目
+        long current = 0; // 当前读的wav文件的byte数目
 
-        long insize = fsize(fin);
+        long total = fsize(fin);
 
         // 回调开始转码
         on_start(env, callback);
@@ -81,7 +64,7 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
 
             read = fread(wav_buffer, sizeof(short int) * 2, 8192, fin);
 
-            total += read * sizeof(short int) * 2;
+            current += read * sizeof(short int) * 2;
 
             if (read != 0) {
                 write = lame_encode_buffer_interleaved(gf, wav_buffer, read, mp3_buffer, 8192);
@@ -93,10 +76,10 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
                 lame_encode_flush(gf, mp3_buffer, 8192);
             }
 
-            on_progress(env, callback, insize, total);
+            on_progress(env, callback, total, current);
         } while (read != 0);
 
-        LOGI("convert  finish");
+        LOGI("convert finish");
 
         // 关闭文件
         lame_close(gf);
@@ -130,7 +113,3 @@ JNIEXPORT jstring JNICALL Java_io_auxo_ame_lite_Mp3Encoder_getLameVersion
         (JNIEnv *env, jobject obj) {
     return (*env)->NewStringUTF(env, get_lame_version());
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif

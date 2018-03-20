@@ -2,6 +2,8 @@ package io.auxo.ame.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,7 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.warkiz.widget.IndicatorSeekBar;
 
@@ -37,6 +41,8 @@ public class AmeLiteActivity extends AppCompatActivity implements RadioGroup.OnC
 
     private Button mEncode;
 
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +67,15 @@ public class AmeLiteActivity extends AppCompatActivity implements RadioGroup.OnC
 
         mEncode = findViewById(R.id.ame_lite_encode);
 
+        mProgressBar = findViewById(R.id.ame_lite_encode_progress_bar);
+
         mTarget.setOnCheckedChangeListener(this);
         mEngineQuality.setOnCheckedChangeListener(this);
         mVbrMode.setOnCheckedChangeListener(this);
 
         mEncode.setOnClickListener(this);
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -106,14 +116,7 @@ public class AmeLiteActivity extends AppCompatActivity implements RadioGroup.OnC
         File fin = new File(file);
         if (fin.exists() && !fin.isDirectory()) {
             final String out = file.substring(0, file.lastIndexOf(".")) + ".mp3";
-
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    Mp3Encoder.encode(file, out, getOptions(), mEncoderCallback);
-                }
-            }.start();
+            new EncodeThread(file, out).start();
         }
     }
 
@@ -152,26 +155,81 @@ public class AmeLiteActivity extends AppCompatActivity implements RadioGroup.OnC
         return options;
     }
 
-    private Mp3Encoder.Callback mEncoderCallback = new Mp3Encoder.Callback() {
+    protected final int MESSAGE_START = 0;
+    protected final int MESSAGE_PROGRESS = 1;
+    protected final int MESSAGE_COMPLETE = 2;
+    protected final int MESSAGE_ERROR = 3;
+
+    protected Handler mEncodeHandler = new Handler() {
         @Override
-        public void onStart() {
-            Log.i(TAG, "onStart");
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MESSAGE_START:
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mProgressBar.setProgress(0);
+                    mEncode.setEnabled(false);
+                    break;
+                case MESSAGE_PROGRESS:
+                    mProgressBar.setMax(msg.arg1);
+                    mProgressBar.setProgress(msg.arg2);
+                    mEncode.setText(msg.arg2 / 1000000f + "M/" + msg.arg1 / 1000000f + "M");
+                    break;
+                case MESSAGE_COMPLETE:
+                    Toast.makeText(getApplicationContext(), "转码完成", Toast.LENGTH_LONG).show();
+                case MESSAGE_ERROR:
+                    mProgressBar.setVisibility(View.GONE);
+                    mEncode.setEnabled(true);
+                    mEncode.setText("encode file");
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    protected class EncodeThread extends Thread implements Mp3Encoder.Callback {
+
+        private String input;
+        private String output;
+
+        public EncodeThread(String input, String output) {
+            this.input = input;
+            this.output = output;
         }
 
         @Override
-        public void onProgress(int total, int current) {
+        public void run() {
+            super.run();
+            Mp3Encoder.encode(input, output, getOptions(), this);
+        }
+
+        @Override
+        public void onStart() {
+            Log.i(TAG, "onStart");
+            mEncodeHandler.sendEmptyMessage(MESSAGE_START);
+        }
+
+        @Override
+        public void onProgress(final int total, final int current) {
             Log.i(TAG, "onProgress total -> " + total + " current -> " + current);
+            Message msg = mEncodeHandler.obtainMessage(MESSAGE_PROGRESS);
+            msg.arg1 = total;
+            msg.arg2 = current;
+            mEncodeHandler.sendMessage(msg);
         }
 
         @Override
         public void onComplete() {
             Log.i(TAG, "onComplete");
+            mEncodeHandler.sendEmptyMessage(MESSAGE_COMPLETE);
         }
 
         @Override
         public void onError() {
             Log.e(TAG, "onError");
+            mEncodeHandler.sendEmptyMessage(MESSAGE_ERROR);
         }
-    };
+    }
 
 }

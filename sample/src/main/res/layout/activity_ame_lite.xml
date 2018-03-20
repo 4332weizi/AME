@@ -197,6 +197,12 @@
             android:text="encode file"
             android:textAllCaps="false" />
 
+        <ProgressBar
+            android:id="@+id/ame_lite_encode_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </ScrollView>

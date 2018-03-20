@@ -1,6 +1,41 @@
 Android MP3 Encoder
 =====================
 
+AME-lite使用方法
+-------
+转码过程属于耗时操作，注意不要再UI线程中执行。
+```java
+Mp3Encoder.Options options = new Mp3Encoder.Options()
+        .sampleRate(44000)
+        .bitrate(120)
+        .numChannels(2)
+        .quality(3)
+        .mode(Mp3Encoder.Options.STEREO);
+
+Mp3Encoder.Callback callback = new Mp3Encoder.Callback() {
+	@Override
+    public void onStart() {             
+    }
+
+    @Override
+    public void onProgress(int total, int current) {
+    }
+
+    @Override
+    public void onComplete() {
+    }
+
+    @Override
+    public void onError() {
+    }
+};
+
+Mp3Encoder.encode(input, output, options, callback);
+// Mp3Encoder.encode(input, output);
+// Mp3Encoder.encode(input, output, options);
+// Mp3Encoder.encode(input, output, callback);
+```
+
 License
 -------
 

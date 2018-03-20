@@ -62,32 +62,39 @@ public class Mp3Encoder {
          */
         private int vbrQuality = -1;
 
-        public void sampleRate(int sampleRate) {
+        public Options sampleRate(int sampleRate) {
             this.sampleRate = sampleRate;
+            return this;
         }
 
-        public void bitrate(int bitrate) {
+        public Options bitrate(int bitrate) {
             this.bitrate = bitrate;
+            return this;
         }
 
-        public void numChannels(@IntRange(from = 1, to = 2) int numChannels) {
+        public Options numChannels(@IntRange(from = 1, to = 2) int numChannels) {
             this.numChannels = numChannels;
+            return this;
         }
 
-        public void mode(@MPEGMode int mode) {
+        public Options mode(@MPEGMode int mode) {
             this.mode = mode;
+            return this;
         }
 
-        public void quality(@IntRange(from = 0, to = 9) int quality) {
+        public Options quality(@IntRange(from = 0, to = 9) int quality) {
             this.quality = quality;
+            return this;
         }
 
-        public void vbrMode(@VBRMode int vbrMode) {
+        public Options vbrMode(@VBRMode int vbrMode) {
             this.vbrMode = vbrMode;
+            return this;
         }
 
-        public void vbrQuality(@IntRange(from = 0, to = 9) int vbrQuality) {
+        public Options vbrQuality(@IntRange(from = 0, to = 9) int vbrQuality) {
             this.vbrQuality = vbrQuality;
+            return this;
         }
 
         public int getSampleRate() {

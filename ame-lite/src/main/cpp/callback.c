@@ -9,11 +9,11 @@ void on_start(JNIEnv *env, jobject callback) {
     }
 }
 
-void on_progress(JNIEnv *env, jobject callback, long total, long progress) {
+void on_progress(JNIEnv *env, jobject callback, long total, long current) {
     if (callback != NULL) {
         jmethodID methodId = get_method_id(env, CLASS_NAME_CALLBACK, METHOD_NAME_ON_PROGRESS,
-                                           "(JJ)V");
-        (*env)->CallVoidMethod(env, callback, methodId, total, progress);
+                                           "(II)V");
+        (*env)->CallVoidMethod(env, callback, methodId, total, current);
     }
 }
 

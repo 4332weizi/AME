@@ -1,6 +1,7 @@
 package io.auxo.ame.lite;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,62 +28,101 @@ public class Mp3Encoder {
         public static final int MONO = 3;
         public static final int NOT_SET = 4;
 
-        private int sampleRate;
-        private int bitRate;
-        private int quality;
-        private int numChannels;
-        private int mode;
+        @IntDef({VBR_OFF, VBR_MT, VBR_RH, VBR_ABR, VBR_MTRH})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface VBRMode {
+        }
+
+        public static final int VBR_OFF = 0;
+        public static final int VBR_MT = 1;
+        public static final int VBR_RH = 2;
+        public static final int VBR_ABR = 3;
+        public static final int VBR_MTRH = 4;
+
+        private int sampleRate = -1;
+        private int bitrate = -1;
+        private int numChannels = -1;
+        private int mode = -1;
+        /**
+         * Internal algorithm selection.
+         * True quality is determined by the bitrate but this variable will effect
+         * quality by selecting expensive or cheap algorithms.
+         * quality=0..9.
+         * 0=best (very slow).
+         * 9=worst.
+         * recommended:  3     near-best quality, not too slow
+         * 5     good quality, fast
+         * 7     ok quality, really fast
+         */
+        private int quality = -1;
+        private int vbrMode = -1;
+        /**
+         * 0 = highest
+         * 9 = lowest
+         */
+        private int vbrQuality = -1;
+
+        public void sampleRate(int sampleRate) {
+            this.sampleRate = sampleRate;
+        }
+
+        public void bitrate(int bitrate) {
+            this.bitrate = bitrate;
+        }
+
+        public void numChannels(@IntRange(from = 1, to = 2) int numChannels) {
+            this.numChannels = numChannels;
+        }
+
+        public void mode(@MPEGMode int mode) {
+            this.mode = mode;
+        }
+
+        public void quality(@IntRange(from = 0, to = 9) int quality) {
+            this.quality = quality;
+        }
+
+        public void vbrMode(@VBRMode int vbrMode) {
+            this.vbrMode = vbrMode;
+        }
+
+        public void vbrQuality(@IntRange(from = 0, to = 9) int vbrQuality) {
+            this.vbrQuality = vbrQuality;
+        }
 
         public int getSampleRate() {
             return sampleRate;
         }
 
-        public Options sampleRate(int sampleRate) {
-            this.sampleRate = sampleRate;
-            return this;
-        }
-
-        public int getBitRate() {
-            return bitRate;
-        }
-
-        public Options bitRate(int bitRate) {
-            this.bitRate = bitRate;
-            return this;
-        }
-
-        public int getQuality() {
-            return quality;
-        }
-
-        public Options quality(int quality) {
-            this.quality = quality;
-            return this;
+        public int getBitrate() {
+            return bitrate;
         }
 
         public int getNumChannels() {
             return numChannels;
         }
 
-        public Options numChannels(int numChannels) {
-            this.numChannels = numChannels;
-            return this;
-        }
-
         public int getMode() {
             return mode;
         }
 
-        public Options mode(@MPEGMode int mode) {
-            this.mode = mode;
-            return this;
+        public int getQuality() {
+            return quality;
+        }
+
+        public int getVbrMode() {
+            return vbrMode;
+        }
+
+        public int getVbrQuality() {
+            return vbrQuality;
         }
     }
 
     public interface Callback {
         void onStart();
 
-        void onProgress(long total, long current);
+        void onProgress(int total, int current);
 
         void onComplete();
 

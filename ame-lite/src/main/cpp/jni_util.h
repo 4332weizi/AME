@@ -11,7 +11,7 @@
 #define SIGNATURE_CHAR      "()C"
 #define SIGNATURE_SHORT     "()S"
 #define SIGNATURE_INT       "()I"
-#define SIGNATURE_LONG      "()L"
+#define SIGNATURE_LONG      "()J"
 #define SIGNATURE_FLOAT     "()F"
 #define SIGNATURE_DOUBLE    "()D"
 #define SIGNATURE_VOID      "()V"

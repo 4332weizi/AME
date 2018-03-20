@@ -1,152 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f0f0f0"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     tools:context="io.auxo.ame.sample.AmeLiteActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"
-        android:paddingLeft="5dp"
-        android:text="target"
-        android:textSize="14sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
-
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="bitrate" />
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:paddingLeft="5dp"
+            android:text="target"
+            android:textSize="14sp" />
 
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/ame_lite_target"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:padding="5dp"
-            android:text="quality" />
+            android:background="@android:color/white"
+            android:orientation="horizontal">
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/ame_lite_target_bitrate"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="5dp"
+                android:text="bitrate" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:paddingLeft="5dp"
-        android:text="encoding engine quality"
-        android:textSize="14sp" />
+            <RadioButton
+                android:id="@+id/ame_lite_target_quality"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="quality" />
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
+        </RadioGroup>
 
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="fast" />
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:paddingLeft="5dp"
+            android:text="encoding engine quality"
+            android:textSize="14sp" />
 
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/ame_lite_engine_quality"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="standard" />
+            android:background="@android:color/white"
+            android:orientation="horizontal">
 
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/ame_lite_engine_quality_fast"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="fast" />
+
+            <RadioButton
+                android:id="@+id/ame_lite_engine_quality_standard"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="standard" />
+
+            <RadioButton
+                android:id="@+id/ame_lite_engine_quality_high"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="high" />
+
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/ame_lite_mono"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="high" />
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:text="mono encoding" />
 
-    </RadioGroup>
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:text="mono encoding" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:paddingLeft="5dp"
-        android:text="bitrate" />
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="5dp" />
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:text="restrict encoder to constant bitrate" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:paddingLeft="5dp"
-        android:text="quality" />
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="5dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:paddingLeft="5dp"
-        android:text="variable bitrate mode"
-        android:textSize="14sp" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
-
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ame_lite_bitrate_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="standard" />
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-        <RadioButton
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="5dp"
+                android:text="bitrate" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/ame_lite_bitrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                app:isb_max="320"
+                app:isb_min="8"
+                app:isb_progress="128" />
+
+            <CheckBox
+                android:id="@+id/ame_lite_force_cbr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="restrict encoder to constant bitrate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ame_lite_vbr_quality_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="fast" />
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </RadioGroup>
-</LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="quality" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/ame_lite_vbr_quality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                app:isb_max="100"
+                app:isb_min="10"
+                app:isb_progress="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="variable bitrate mode"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/ame_lite_vbr_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/ame_lite_vbr_standard"
+                    style="@android:style/Widget.CompoundButton.CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="standard" />
+
+                <RadioButton
+                    android:id="@+id/ame_lite_vbr_fast"
+                    style="@android:style/Widget.CompoundButton.CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="fast" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/ame_lite_encode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="encode file"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</ScrollView>

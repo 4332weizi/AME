@@ -76,6 +76,7 @@ void encode(JNIEnv *env, jclass clazz, jstring in, jstring out, jobject options,
                 lame_encode_flush(gf, mp3_buffer, 8192);
             }
 
+            LOGI("on_progress %ld,%ld", total, current);
             on_progress(env, callback, total, current);
         } while (read != 0);
 

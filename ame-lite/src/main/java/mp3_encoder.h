@@ -7,13 +7,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /*
  * Class:     io_auxo_ame_lite_Mp3Encoder
  * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder$Options;Lio/auxo/ame/lite/Mp3Encoder$Callback;)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/lite/Mp3Encoder/Options;Lio/auxo/ame/lite/Mp3Encoder/Callback;)V
  */
-JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode__Ljava_lang_String_2Ljava_lang_String_2Lio_auxo_ame_lite_Mp3Encoder_00024Options_2Lio_auxo_ame_lite_Mp3Encoder_00024Callback_2
+JNIEXPORT void JNICALL Java_io_auxo_ame_lite_Mp3Encoder_encode
   (JNIEnv *, jclass, jstring, jstring, jobject, jobject);
 
 /*

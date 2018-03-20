@@ -39,7 +39,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
+    
+    implementation 'pub.devrel:easypermissions:1.2.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:1.2.9'
 
     implementation project(':ame-lite')

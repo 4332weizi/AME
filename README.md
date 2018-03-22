@@ -1,9 +1,17 @@
 Android MP3 Encoder
 =====================
+添加依赖
+-------
+```groovy
+dependencies {
+  implementation 'io.auxo.ame:ame-lite:0.1'
+}
+```
 
 AME-lite使用方法
 -------
-转码过程属于耗时操作，注意不要再UI线程中执行。
+
+转码过程属于耗时操作，注意不要在UI线程中执行。
 ```java
 Mp3Encoder.Options options = new Mp3Encoder.Options()
         .sampleRate(44000)
@@ -13,7 +21,7 @@ Mp3Encoder.Options options = new Mp3Encoder.Options()
         .mode(Mp3Encoder.Options.STEREO);
 
 Mp3Encoder.Callback callback = new Mp3Encoder.Callback() {
-	@Override
+    @Override
     public void onStart() {             
     }
 

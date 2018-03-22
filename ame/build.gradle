@@ -1,18 +1,17 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionName versions.ame
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64", "mips", "mips64"
         }
     }
 
@@ -31,11 +30,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    testImplementation deps.junit
+    androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.espresso
+
+    api deps.support.annotations
 }
 
 tasks.whenTaskAdded { task ->
@@ -44,4 +44,9 @@ tasks.whenTaskAdded { task ->
     } else if (task.name == 'externalNativeBuildDebug') {
         task.dependsOn ":mp3lame:externalNativeBuildDebug"
     }
+    if (task.name == 'uploadArchives') {
+        dependencies.add('implementation', "io.auxo.ame:mp3lame:$versions.mp3lame")
+    }
 }
+
+apply from: "../mavenUpload.gradle"

@@ -1,0 +1,53 @@
+apply plugin: 'maven'
+
+def VERSION_NAME = android.getDefaultConfig().versionName
+
+def isSnapshotBuild = VERSION_NAME.contains("SNAPSHOT")
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError = false
+    options.encoding = "UTF-8"
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    if (!isSnapshotBuild) {
+        archives javadocJar
+        archives sourcesJar
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: MAVEN_REPO_SNAPSHOT) {
+                authentication(userName: MAVEN_REPO_USERNAME, password: MAVEN_REPO_PASSWORD)
+            }
+            repository(url: MAVEN_REPO_RELEASE) {
+                authentication(userName: MAVEN_REPO_USERNAME, password: MAVEN_REPO_PASSWORD)
+            }
+            pom.project {
+                groupId MAVEN_REPO_GROUP
+                artifactId MAVEN_REPO_ARTIFACT
+                version VERSION_NAME
+                packaging 'aar'
+            }
+
+            println 'Group Id：' + MAVEN_REPO_GROUP
+            println 'Artifact：' + MAVEN_REPO_ARTIFACT
+            println 'Version：' + VERSION_NAME
+            println 'Maven Repository：' + (isSnapshotBuild ? MAVEN_REPO_SNAPSHOT : MAVEN_REPO_RELEASE)
+        }
+    }
+}

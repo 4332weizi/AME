@@ -4,10 +4,12 @@ set( DIST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../dist )
 
 # 添加ame源文件
 aux_source_directory( ${CMAKE_HOME_DIRECTORY} AME_SRC_LIST )
+aux_source_directory( ${CMAKE_HOME_DIRECTORY}/frontend AME_FRONTEND_SRC_LIST )
 
 add_library( ame
 			 SHARED
-			 ${AME_SRC_LIST} )
+			 ${AME_SRC_LIST}
+			 ${AME_FRONTEND_SRC_LIST})
 
 # 添加mp3lame动态链接库
 add_library( mp3lame SHARED IMPORTED )

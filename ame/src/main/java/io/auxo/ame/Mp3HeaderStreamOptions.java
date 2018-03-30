@@ -16,8 +16,9 @@ import java.lang.annotation.RetentionPolicy;
  * --strictly-enforce-ISO   comply as much as possible to ISO MPEG spec);
  * --buffer-constraint <constraint> available values for constraint:
  * .               default, strict, maximum
+ *
+ * @author Victor Chiu
  */
-
 public class Mp3HeaderStreamOptions {
 
     @IntDef({MDB_DEFAULT, MDB_STRICT_ISO, MDB_MAXIMUM})
@@ -31,22 +32,44 @@ public class Mp3HeaderStreamOptions {
 
     @IntDef({EMPHASIS_N, EMPHASIS_5, EMPHASIS_C})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Emphasis {
+    public @interface DeEmphasis {
     }
 
     public static final int EMPHASIS_N = 0;
     public static final int EMPHASIS_5 = 1;
     public static final int EMPHASIS_C = 5;
 
-    private int emphasis = -1;
+    /**
+     * 去加重
+     */
+    private int deEmphasis = -1;
+    /**
+     * 标记为版权
+     */
     private boolean markAsCopyright;
+    /**
+     * 标记为非原创
+     */
     private boolean markAsNonOriginal;
-    private boolean errorProtectionEnabled = false;
-    private boolean reservoirEnabled = true;
+    /**
+     * 错误检测
+     */
+    private boolean errorProtection = false;
+    /**
+     * 缓冲区
+     */
+    private boolean bitReservoir = true;
+    /**
+     * 严格遵守ISO MPEG规范
+     */
+    private boolean strictlyEnforceISO = false;
+    /**
+     * 缓冲约束
+     */
     private int bufferConstraint = MDB_DEFAULT;
 
-    public Mp3HeaderStreamOptions emphasis(@Emphasis int emphasis) {
-        this.emphasis = emphasis;
+    public Mp3HeaderStreamOptions deEmphasis(@DeEmphasis int deEmphasis) {
+        this.deEmphasis = deEmphasis;
         return this;
     }
 
@@ -61,17 +84,22 @@ public class Mp3HeaderStreamOptions {
     }
 
     public Mp3HeaderStreamOptions enableErrorProtection() {
-        this.errorProtectionEnabled = true;
+        this.errorProtection = true;
         return this;
     }
 
     public Mp3HeaderStreamOptions disableErrorProtection() {
-        this.errorProtectionEnabled = false;
+        this.errorProtection = false;
         return this;
     }
 
-    public Mp3HeaderStreamOptions disabledReservoir() {
-        this.reservoirEnabled = false;
+    public Mp3HeaderStreamOptions disabledBitReservoir() {
+        this.bitReservoir = false;
+        return this;
+    }
+
+    public Mp3HeaderStreamOptions strictlyEnforceISO(){
+        this.strictlyEnforceISO = true;
         return this;
     }
 

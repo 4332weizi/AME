@@ -32,6 +32,8 @@ import java.util.Map;
  * won't fit in a version 1 tag (e.g. the title string is longer than 30
  * characters), or the '--add-id3v2' or '--id3v2-only' options are used,
  * or output is redirected to stdout.
+ *
+ * @author Victor Chiu
  */
 public class Id3TagOptions {
 
@@ -57,26 +59,44 @@ public class Id3TagOptions {
     private String comment;
     /**
      * 类型
-     * 一系列艺术类型清单中的
-     * <a href="https://zh.wikipedia.org/wiki/ID3">编号数</a>
+     * 一系列<a href="https://4332weizi.github.io/lame-mirror/doc/html/detailed.html#genre-list">艺术类型清单</a>
+     * 中的一个
      */
     private String genre;
+    /**
+     * 类型
+     * 一系列中的<a href="https://4332weizi.github.io/lame-mirror/doc/html/detailed.html#genre-list">艺术类型清单</a>
+     * 中的一个编号
+     */
+    private int genreId;
     /**
      * 曲目
      */
     private int track;
     /**
+     * 曲目
+     */
+    private int totalTrack;
+    /**
      * 封面
      */
     private String albumArt;
+    /**
+     * 由id和value（v2.3）定义的文本或URL帧。
+     * 用户自定义帧。
+     */
     private Map<String, String> userDefinedFrames;
-    private boolean forceAddid3v2 = false;
-    private boolean v1Only;
-    private boolean v2Only;
-    private boolean utf16;
-    private boolean lation1;
-    private int pad;
+    private boolean forceAddId3v2;
+    private boolean addId3v1Only;
+    private boolean addId3v2Only;
+    private boolean useUtf16;
+    private boolean useLation1;
+    private boolean space;
+    private int pad = -1;
     private int padv2;
+    /**
+     * 忽略传入的标签值中的错误
+     */
     private boolean ignoreErrors = false;
 
     public Id3TagOptions() {

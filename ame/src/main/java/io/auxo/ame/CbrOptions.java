@@ -3,8 +3,9 @@ package io.auxo.ame;
 /**
  * -b <bitrate>    set the bitrate in kbps, default 128 kbps
  * --cbr           enforce use of constant bitrate
+ *
+ * @author Victor Chiu
  */
-
 public class CbrOptions {
 
     /**

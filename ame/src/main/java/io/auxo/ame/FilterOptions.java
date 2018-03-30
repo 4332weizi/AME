@@ -7,15 +7,33 @@ package io.auxo.ame;
  * --highpass <freq>       frequency(kHz), highpass filter cutoff below freq
  * --highpass-width <freq> frequency(kHz) - default 15% of highpass freq
  * --resample <sfreq>  sampling frequency of output file(kHz)- default=automatic
+ *
+ * @author Victor Chiu
  */
-
 public class FilterOptions {
 
+    /**
+     * 低通滤波器，过滤掉频率lowPass以上的数据。
+     * 范围为[0.001..50]kHz或[50..50000]Hz。
+     */
     private double lowPass = -1;
+    /**
+     * 低通曲线宽度。范围为[0.001..16]kHz或 [16..50000]Hz。
+     */
     private double lowPassWidth = -1;
+    /**
+     * 高通滤波器，过滤掉频率freq以下的数据。
+     * 范围为[0.001..16]kHz或[16..50000]Hz。
+     */
     private double highPass = -1;
+    /**
+     * 高通曲线宽度。
+     */
     private double highPassWidth = -1;
-    private double reSample = -1;
+    /**
+     * 输出文件的采样率。
+     */
+    private double sampleRate = -1;
 
     public FilterOptions lowPass(double lowPass) {
         this.lowPass = lowPass;
@@ -37,8 +55,8 @@ public class FilterOptions {
         return this;
     }
 
-    public FilterOptions reSample(double reSample) {
-        this.reSample = reSample;
+    public FilterOptions sampleRate(double sampleRate) {
+        this.sampleRate = sampleRate;
         return this;
     }
 }

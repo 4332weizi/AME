@@ -9,12 +9,42 @@ extern "C" {
 #endif
 /*
  * Class:     io_auxo_ame_Mp3Encoder
+ * Method:    encode
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Lio/auxo/ame/Mp3Encoder$Options;Lio/auxo/ame/Mp3Encoder$Callback;)V
+ */
+JNIEXPORT void JNICALL Java_io_auxo_ame_Mp3Encoder_encode
+        (JNIEnv *, jclass, jstring, jstring, jobject, jobject);
+
+/*
+ * Class:     io_auxo_ame_Mp3Encoder
  * Method:    getLameVersion
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_auxo_ame_Mp3Encoder_getLameVersion
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
+#ifdef __cplusplus
+}
+#endif
+#endif
+/* Header for class io_auxo_ame_Mp3Encoder_Options */
+
+#ifndef _Included_io_auxo_ame_Mp3Encoder_Options
+#define _Included_io_auxo_ame_Mp3Encoder_Options
+#ifdef __cplusplus
+extern "C" {
+#endif
+#ifdef __cplusplus
+}
+#endif
+#endif
+/* Header for class io_auxo_ame_Mp3Encoder_Callback */
+
+#ifndef _Included_io_auxo_ame_Mp3Encoder_Callback
+#define _Included_io_auxo_ame_Mp3Encoder_Callback
+#ifdef __cplusplus
+extern "C" {
+#endif
 #ifdef __cplusplus
 }
 #endif

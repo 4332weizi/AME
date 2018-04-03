@@ -41,7 +41,7 @@
 #include <stdlib.h>
 
 #include "lame.h"
-#include "main.h"
+#include "../ame_main.h"
 #include "lametime.h"
 #include "timestatus.h"
 #include "brhist.h"

@@ -54,9 +54,8 @@ char   *strchr(), *strrchr();
 #include "lame.h"
 
 #include "parse.h"
-#include "main.h"
+#include "../ame_main.h"
 #include "get_audio.h"
-#include "version.h"
 #include "console.h"
 
 #undef dimension_of
@@ -96,7 +95,6 @@ char   *strchr(), *strrchr();
 #define lame_set_sfscale(a,b) (void)0
 #endif
 
-static int const lame_alpha_version_enabled = LAME_ALPHA_VERSION;
 static int const internal_opts_enabled = INTERNAL_OPTS;
 
 /* GLOBAL VARIABLES.  set by parse_args() */
@@ -422,9 +420,6 @@ lame_version_print(FILE * const fp)
         else
             fprintf(fp, "LAME version %s\n%*s(%s)\n\n", v, n_white_spaces, "", u);
     }
-    if (lame_alpha_version_enabled)
-        fprintf(fp, "warning: alpha versions should be used for testing only\n\n");
-
 
     return 0;
 }

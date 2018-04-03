@@ -31,7 +31,6 @@
 #include "machine.h"
 #include "encoder.h"
 #include "util.h"
-#include "tables.h"
 
 #define PRECOMPUTE
 #if defined(__FreeBSD__) && !defined(__alpha__)
@@ -47,8 +46,7 @@
 /*empty and close mallocs in gfc */
 
 void
-free_id3tag(lame_internal_flags * const gfc)
-{
+free_id3tag(lame_internal_flags *const gfc) {
     gfc->tag_spec.language[0] = 0;
     if (gfc->tag_spec.title != 0) {
         free(gfc->tag_spec.title);
@@ -76,9 +74,9 @@ free_id3tag(lame_internal_flags * const gfc)
     if (gfc->tag_spec.v2_head != 0) {
         FrameDataNode *node = gfc->tag_spec.v2_head;
         do {
-            void   *p = node->dsc.ptr.b;
-            void   *q = node->txt.ptr.b;
-            void   *r = node;
+            void *p = node->dsc.ptr.b;
+            void *q = node->txt.ptr.b;
+            void *r = node;
             node = node->nxt;
             free(p);
             free(q);
@@ -91,8 +89,7 @@ free_id3tag(lame_internal_flags * const gfc)
 
 
 static void
-free_global_data(lame_internal_flags * gfc)
-{
+free_global_data(lame_internal_flags *gfc) {
     if (gfc && gfc->cd_psy) {
         if (gfc->cd_psy->l.s3) {
             /* XXX allocated in psymodel_init() */
@@ -109,9 +106,8 @@ free_global_data(lame_internal_flags * gfc)
 
 
 void
-freegfc(lame_internal_flags * const gfc)
-{                       /* bit stream structure */
-    int     i;
+freegfc(lame_internal_flags *const gfc) {                       /* bit stream structure */
+    int i;
 
     if (gfc == 0) return;
 
@@ -166,8 +162,7 @@ freegfc(lame_internal_flags * const gfc)
 }
 
 void
-calloc_aligned(aligned_pointer_t * ptr, unsigned int size, unsigned int bytes)
-{
+calloc_aligned(aligned_pointer_t *ptr, unsigned int size, unsigned int bytes) {
     if (ptr) {
         if (!ptr->pointer) {
             ptr->pointer = malloc(size + bytes);
@@ -175,12 +170,10 @@ calloc_aligned(aligned_pointer_t * ptr, unsigned int size, unsigned int bytes)
                 memset(ptr->pointer, 0, size + bytes);
                 if (bytes > 0) {
                     ptr->aligned = (void *) ((((size_t) ptr->pointer + bytes - 1) / bytes) * bytes);
-                }
-                else {
+                } else {
                     ptr->aligned = ptr->pointer;
                 }
-            }
-            else {
+            } else {
                 ptr->aligned = 0;
             }
         }
@@ -188,8 +181,7 @@ calloc_aligned(aligned_pointer_t * ptr, unsigned int size, unsigned int bytes)
 }
 
 void
-free_aligned(aligned_pointer_t * ptr)
-{
+free_aligned(aligned_pointer_t *ptr) {
     if (ptr) {
         if (ptr->pointer) {
             free(ptr->pointer);
@@ -202,9 +194,8 @@ free_aligned(aligned_pointer_t * ptr)
 /*those ATH formulas are returning
 their minimum value for input = -1*/
 
-static  FLOAT
-ATHformula_GB(FLOAT f, FLOAT value, FLOAT f_min, FLOAT f_max)
-{
+static FLOAT
+ATHformula_GB(FLOAT f, FLOAT value, FLOAT f_min, FLOAT f_max) {
     /* from Painter & Spanias
        modified by Gabriel Bouvigne to better fit the reality
        ath =    3.640 * pow(f,-0.8)
@@ -227,7 +218,7 @@ it adjusts from something close to Painter & Spanias
 on V9 up to Bouvigne's formula for V0. This way the VBR
 bitrate is more balanced according to the -V value.*/
 
-    FLOAT   ath;
+    FLOAT ath;
 
     /* the following Hack allows to ask for the lowest value */
     if (f < -.3)
@@ -238,48 +229,45 @@ bitrate is more balanced according to the -V value.*/
     f = Min(f_max, f);
 
     ath = 3.640 * pow(f, -0.8)
-        - 6.800 * exp(-0.6 * pow(f - 3.4, 2.0))
-        + 6.000 * exp(-0.15 * pow(f - 8.7, 2.0))
-        + (0.6 + 0.04 * value) * 0.001 * pow(f, 4.0);
+          - 6.800 * exp(-0.6 * pow(f - 3.4, 2.0))
+          + 6.000 * exp(-0.15 * pow(f - 8.7, 2.0))
+          + (0.6 + 0.04 * value) * 0.001 * pow(f, 4.0);
     return ath;
 }
 
 
-
 FLOAT
-ATHformula(SessionConfig_t const *cfg, FLOAT f)
-{
-    FLOAT   ath;
+ATHformula(SessionConfig_t const *cfg, FLOAT f) {
+    FLOAT ath;
     switch (cfg->ATHtype) {
-    case 0:
-        ath = ATHformula_GB(f, 9, 0.1f, 24.0f);
-        break;
-    case 1:
-        ath = ATHformula_GB(f, -1, 0.1f, 24.0f); /*over sensitive, should probably be removed */
-        break;
-    case 2:
-        ath = ATHformula_GB(f, 0, 0.1f, 24.0f);
-        break;
-    case 3:
-        ath = ATHformula_GB(f, 1, 0.1f, 24.0f) + 6; /*modification of GB formula by Roel */
-        break;
-    case 4:
-        ath = ATHformula_GB(f, cfg->ATHcurve, 0.1f, 24.0f);
-        break;
-    case 5:
-        ath = ATHformula_GB(f, cfg->ATHcurve, 3.41f, 16.1f);
-        break;
-    default:
-        ath = ATHformula_GB(f, 0, 0.1f, 24.0f);
-        break;
+        case 0:
+            ath = ATHformula_GB(f, 9, 0.1f, 24.0f);
+            break;
+        case 1:
+            ath = ATHformula_GB(f, -1, 0.1f, 24.0f); /*over sensitive, should probably be removed */
+            break;
+        case 2:
+            ath = ATHformula_GB(f, 0, 0.1f, 24.0f);
+            break;
+        case 3:
+            ath = ATHformula_GB(f, 1, 0.1f, 24.0f) + 6; /*modification of GB formula by Roel */
+            break;
+        case 4:
+            ath = ATHformula_GB(f, cfg->ATHcurve, 0.1f, 24.0f);
+            break;
+        case 5:
+            ath = ATHformula_GB(f, cfg->ATHcurve, 3.41f, 16.1f);
+            break;
+        default:
+            ath = ATHformula_GB(f, 0, 0.1f, 24.0f);
+            break;
     }
     return ath;
 }
 
 /* see for example "Zwicker: Psychoakustik, 1982; ISBN 3-540-11401-7 */
 FLOAT
-freq2bark(FLOAT freq)
-{
+freq2bark(FLOAT freq) {
     /* input: freq in hz  output: barks */
     if (freq < 0)
         freq = 0;
@@ -302,16 +290,13 @@ freq2cbw(FLOAT freq)
 #endif
 
 
-
-
 #define ABS(A) (((A)>0) ? (A) : -(A))
 
 int
 FindNearestBitrate(int bRate, /* legal rates from 8 to 320 */
-                   int version, int samplerate)
-{                       /* MPEG-1 or MPEG-2 LSF */
-    int     bitrate;
-    int     i;
+                   int version, int samplerate) {                       /* MPEG-1 or MPEG-2 LSF */
+    int bitrate;
+    int i;
 
     if (samplerate < 16000)
         version = 2;
@@ -326,9 +311,6 @@ FindNearestBitrate(int bRate, /* legal rates from 8 to 320 */
     }
     return bitrate;
 }
-
-
-
 
 
 #ifndef Min
@@ -348,18 +330,17 @@ FindNearestBitrate(int bRate, /* legal rates from 8 to 320 */
  * Gabriel Bouvigne 2002-11-03
  */
 int
-nearestBitrateFullIndex(uint16_t bitrate)
-{
+nearestBitrateFullIndex(uint16_t bitrate) {
     /* borrowed from DM abr presets */
 
     const int full_bitrate_table[] =
-        { 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320 };
+            {8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320};
 
 
-    int     lower_range = 0, lower_range_kbps = 0, upper_range = 0, upper_range_kbps = 0;
+    int lower_range = 0, lower_range_kbps = 0, upper_range = 0, upper_range_kbps = 0;
 
 
-    int     b;
+    int b;
 
 
     /* We assume specified bitrate will be 320kbps */
@@ -389,16 +370,12 @@ nearestBitrateFullIndex(uint16_t bitrate)
 }
 
 
-
-
-
 /* map frequency to a valid MP3 sample frequency
  *
  * Robert Hegemann 2000-07-01
  */
 int
-map2MP3Frequency(int freq)
-{
+map2MP3Frequency(int freq) {
     if (freq <= 8000)
         return 8000;
     if (freq <= 11025)
@@ -422,9 +399,8 @@ map2MP3Frequency(int freq)
 int
 BitrateIndex(int bRate,      /* legal rates from 32 to 448 kbps */
              int version,    /* MPEG-1 or MPEG-2/2.5 LSF */
-             int samplerate)
-{                       /* convert bitrate in kbps to index */
-    int     i;
+             int samplerate) {                       /* convert bitrate in kbps to index */
+    int i;
     if (samplerate < 16000)
         version = 2;
     for (i = 0; i <= 14; i++) {
@@ -440,39 +416,38 @@ BitrateIndex(int bRate,      /* legal rates from 32 to 448 kbps */
 /* convert samp freq in Hz to index */
 
 int
-SmpFrqIndex(int sample_freq, int *const version)
-{
+SmpFrqIndex(int sample_freq, int *const version) {
     switch (sample_freq) {
-    case 44100:
-        *version = 1;
-        return 0;
-    case 48000:
-        *version = 1;
-        return 1;
-    case 32000:
-        *version = 1;
-        return 2;
-    case 22050:
-        *version = 0;
-        return 0;
-    case 24000:
-        *version = 0;
-        return 1;
-    case 16000:
-        *version = 0;
-        return 2;
-    case 11025:
-        *version = 0;
-        return 0;
-    case 12000:
-        *version = 0;
-        return 1;
-    case 8000:
-        *version = 0;
-        return 2;
-    default:
-        *version = 0;
-        return -1;
+        case 44100:
+            *version = 1;
+            return 0;
+        case 48000:
+            *version = 1;
+            return 1;
+        case 32000:
+            *version = 1;
+            return 2;
+        case 22050:
+            *version = 0;
+            return 0;
+        case 24000:
+            *version = 0;
+            return 1;
+        case 16000:
+            *version = 0;
+            return 2;
+        case 11025:
+            *version = 0;
+            return 0;
+        case 12000:
+            *version = 0;
+            return 1;
+        case 8000:
+            *version = 0;
+            return 2;
+        default:
+            *version = 0;
+            return -1;
     }
 }
 
@@ -494,13 +469,12 @@ SmpFrqIndex(int sample_freq, int *const version)
 
 /* resampling via FIR filter, blackman window */
 inline static FLOAT
-blackman(FLOAT x, FLOAT fcn, int l)
-{
+blackman(FLOAT x, FLOAT fcn, int l) {
     /* This algorithm from:
        SIGNAL PROCESSING ALGORITHMS IN FORTRAN AND C
        S.D. Stearns and R.A. David, Prentice-Hall, 1992
      */
-    FLOAT   bkwn, x2;
+    FLOAT bkwn, x2;
     FLOAT const wcn = (PI * fcn);
 
     x /= l;
@@ -526,29 +500,26 @@ blackman(FLOAT x, FLOAT fcn, int l)
 /* Joint work of Euclid and M. Hendry */
 
 static int
-gcd(int i, int j)
-{
+gcd(int i, int j) {
     /*    assert ( i > 0  &&  j > 0 ); */
     return j ? gcd(j, i % j) : i;
 }
 
 
-
 static int
-fill_buffer_resample(lame_internal_flags * gfc,
-                     sample_t * outbuf,
-                     int desired_len, sample_t const *inbuf, int len, int *num_used, int ch)
-{
+fill_buffer_resample(lame_internal_flags *gfc,
+                     sample_t *outbuf,
+                     int desired_len, sample_t const *inbuf, int len, int *num_used, int ch) {
     SessionConfig_t const *const cfg = &gfc->cfg;
     EncStateVar_t *esv = &gfc->sv_enc;
-    double  resample_ratio = (double)cfg->samplerate_in / (double)cfg->samplerate_out;
-    int     BLACKSIZE;
-    FLOAT   offset, xvalue;
-    int     i, j = 0, k;
-    int     filter_l;
-    FLOAT   fcn, intratio;
-    FLOAT  *inbuf_old;
-    int     bpc;             /* number of convolution functions to pre-compute */
+    double resample_ratio = (double) cfg->samplerate_in / (double) cfg->samplerate_out;
+    int BLACKSIZE;
+    FLOAT offset, xvalue;
+    int i, j = 0, k;
+    int filter_l;
+    FLOAT fcn, intratio;
+    FLOAT *inbuf_old;
+    int bpc;             /* number of convolution functions to pre-compute */
     bpc = cfg->samplerate_out / gcd(cfg->samplerate_out, cfg->samplerate_in);
     if (bpc > BPC)
         bpc = BPC;
@@ -574,7 +545,7 @@ fill_buffer_resample(lame_internal_flags * gfc,
 
         /* precompute blackman filter coefficients */
         for (j = 0; j <= 2 * bpc; j++) {
-            FLOAT   sum = 0.;
+            FLOAT sum = 0.;
             offset = (j - bpc) / (2. * bpc);
             for (i = 0; i <= filter_l; i++)
                 sum += esv->blackfilt[j][i] = blackman(i - offset, fcn, filter_l);
@@ -589,8 +560,8 @@ fill_buffer_resample(lame_internal_flags * gfc,
     /* time of j'th element in inbuf = itime + j/ifreq; */
     /* time of k'th element in outbuf   =  j/ofreq */
     for (k = 0; k < desired_len; k++) {
-        double  time0 = k * resample_ratio; /* time of k'th output sample */
-        int     joff;
+        double time0 = k * resample_ratio; /* time of k'th output sample */
+        int joff;
 
         j = floor(time0 - esv->itime[ch]);
 
@@ -638,8 +609,7 @@ fill_buffer_resample(lame_internal_flags * gfc,
     if (*num_used >= BLACKSIZE) {
         for (i = 0; i < BLACKSIZE; i++)
             inbuf_old[i] = inbuf[*num_used + i - BLACKSIZE];
-    }
-    else {
+    } else {
         /* shift in *num_used samples into inbuf_old  */
         int const n_shift = BLACKSIZE - *num_used; /* number of samples to shift */
 
@@ -658,8 +628,7 @@ fill_buffer_resample(lame_internal_flags * gfc,
 }
 
 int
-isResamplingNecessary(SessionConfig_t const* cfg)
-{
+isResamplingNecessary(SessionConfig_t const *cfg) {
     int const l = cfg->samplerate_out * 0.9995f;
     int const h = cfg->samplerate_out * 1.0005f;
     return (cfg->samplerate_in < l) || (h < cfg->samplerate_in) ? 1 : 0;
@@ -670,25 +639,24 @@ isResamplingNecessary(SessionConfig_t const* cfg)
    were used.  n_out = number of samples copied into mfbuf  */
 
 void
-fill_buffer(lame_internal_flags * gfc,
-            sample_t * const mfbuf[2], sample_t const * const in_buffer[2], int nsamples, int *n_in, int *n_out)
-{
+fill_buffer(lame_internal_flags *gfc,
+            sample_t *const mfbuf[2], sample_t const *const in_buffer[2], int nsamples, int *n_in,
+            int *n_out) {
     SessionConfig_t const *const cfg = &gfc->cfg;
-    int     mf_size = gfc->sv_enc.mf_size;
-    int     framesize = 576 * cfg->mode_gr;
-    int     nout, ch = 0;
-    int     nch = cfg->channels_out;
+    int mf_size = gfc->sv_enc.mf_size;
+    int framesize = 576 * cfg->mode_gr;
+    int nout, ch = 0;
+    int nch = cfg->channels_out;
 
     /* copy in new samples into mfbuf, with resampling if necessary */
     if (isResamplingNecessary(cfg)) {
         do {
             nout =
-                fill_buffer_resample(gfc, &mfbuf[ch][mf_size],
-                                     framesize, in_buffer[ch], nsamples, n_in, ch);
+                    fill_buffer_resample(gfc, &mfbuf[ch][mf_size],
+                                         framesize, in_buffer[ch], nsamples, n_in, ch);
         } while (++ch < nch);
         *n_out = nout;
-    }
-    else {
+    } else {
         nout = Min(framesize, nsamples);
         do {
             memcpy(&mfbuf[ch][mf_size], &in_buffer[ch][0], nout * sizeof(mfbuf[0][0]));
@@ -699,11 +667,6 @@ fill_buffer(lame_internal_flags * gfc,
 }
 
 
-
-
-
-
-
 /***********************************************************************
 *
 *  Message Output
@@ -711,15 +674,13 @@ fill_buffer(lame_internal_flags * gfc,
 ***********************************************************************/
 
 void
-lame_report_def(const char *format, va_list args)
-{
+lame_report_def(const char *format, va_list args) {
     (void) vfprintf(stderr, format, args);
     fflush(stderr); /* an debug function should flush immediately */
 }
 
-void 
-lame_report_fnc(lame_report_function print_f, const char *format, ...)
-{
+void
+lame_report_fnc(lame_report_function print_f, const char *format, ...) {
     if (print_f) {
         va_list args;
         va_start(args, format);
@@ -730,8 +691,7 @@ lame_report_fnc(lame_report_function print_f, const char *format, ...)
 
 
 void
-lame_debugf(const lame_internal_flags* gfc, const char *format, ...)
-{
+lame_debugf(const lame_internal_flags *gfc, const char *format, ...) {
     if (gfc && gfc->report_dbg) {
         va_list args;
         va_start(args, format);
@@ -742,8 +702,7 @@ lame_debugf(const lame_internal_flags* gfc, const char *format, ...)
 
 
 void
-lame_msgf(const lame_internal_flags* gfc, const char *format, ...)
-{
+lame_msgf(const lame_internal_flags *gfc, const char *format, ...) {
     if (gfc && gfc->report_msg) {
         va_list args;
         va_start(args, format);
@@ -754,8 +713,7 @@ lame_msgf(const lame_internal_flags* gfc, const char *format, ...)
 
 
 void
-lame_errorf(const lame_internal_flags* gfc, const char *format, ...)
-{
+lame_errorf(const lame_internal_flags *gfc, const char *format, ...) {
     if (gfc && gfc->report_err) {
         va_list args;
         va_start(args, format);
@@ -783,8 +741,7 @@ extern int has_SSE2_nasm(void);
 #endif
 
 int
-has_MMX(void)
-{
+has_MMX(void) {
 #ifdef HAVE_NASM
     return has_MMX_nasm();
 #else
@@ -793,8 +750,7 @@ has_MMX(void)
 }
 
 int
-has_3DNow(void)
-{
+has_3DNow(void) {
 #ifdef HAVE_NASM
     return has_3DNow_nasm();
 #else
@@ -803,8 +759,7 @@ has_3DNow(void)
 }
 
 int
-has_SSE(void)
-{
+has_SSE(void) {
 #ifdef HAVE_NASM
     return has_SSE_nasm();
 #else
@@ -817,8 +772,7 @@ has_SSE(void)
 }
 
 int
-has_SSE2(void)
-{
+has_SSE2(void) {
 #ifdef HAVE_NASM
     return has_SSE2_nasm();
 #else
@@ -831,8 +785,7 @@ has_SSE2(void)
 }
 
 void
-disable_FPE(void)
-{
+disable_FPE(void) {
 /* extremly system dependent stuff, move to a lib to make the code readable */
 /*==========================================================================*/
 
@@ -938,9 +891,6 @@ disable_FPE(void)
 }
 
 
-
-
-
 #ifdef USE_FAST_LOG
 /***********************************************************************
  *
@@ -958,7 +908,7 @@ disable_FPE(void)
 #define LOG2_SIZE       (512)
 #define LOG2_SIZE_L2    (9)
 
-static ieee754_float32_t log_table[LOG2_SIZE + 1];
+static float log_table[LOG2_SIZE + 1];
 
 
 
@@ -973,19 +923,19 @@ init_log_table(void)
 
     if (!init) {
         for (j = 0; j < LOG2_SIZE + 1; j++)
-            log_table[j] = log(1.0f + j / (ieee754_float32_t) LOG2_SIZE) / log(2.0f);
+            log_table[j] = log(1.0f + j / (float) LOG2_SIZE) / log(2.0f);
     }
     init = 1;
 }
 
 
 
-ieee754_float32_t
-fast_log2(ieee754_float32_t x)
+float
+fast_log2(float x)
 {
-    ieee754_float32_t log2val, partial;
+    float log2val, partial;
     union {
-        ieee754_float32_t f;
+        float f;
         int     i;
     } fi;
     int     mantisse;
@@ -1008,8 +958,7 @@ fast_log2(ieee754_float32_t x)
 
 
 void
-init_log_table(void)
-{
+init_log_table(void) {
 }
 
 

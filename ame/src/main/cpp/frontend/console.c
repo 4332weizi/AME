@@ -31,7 +31,7 @@ char   *strchr(), *strrchr();
 #include <stdio.h>
 #include <stdarg.h>
 #include "console.h"
-#include "main.h"
+#include "../ame_main.h"
 
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>

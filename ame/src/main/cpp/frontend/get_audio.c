@@ -79,7 +79,7 @@ char   *strchr(), *strrchr();
 #endif
 
 #include "lame.h"
-#include "main.h"
+#include "../ame_main.h"
 #include "get_audio.h"
 #include "lametime.h"
 #include "console.h"
@@ -1265,12 +1265,12 @@ unpack_read_samples(const int samples_to_read, const int bytes_per_sample,
     }
 #undef GA_URS_IFLOOP
     if (global.pcm_is_ieee_float) {
-        ieee754_float32_t const m_max = INT_MAX;
-        ieee754_float32_t const m_min = -(ieee754_float32_t) INT_MIN;
-        ieee754_float32_t *x = (ieee754_float32_t *) sample_buffer;
-        assert(sizeof(ieee754_float32_t) == sizeof(int));
+        float const m_max = INT_MAX;
+        float const m_min = -(float) INT_MIN;
+        float *x = (float *) sample_buffer;
+        assert(sizeof(float) == sizeof(int));
         for (i = 0; i < samples_to_read; ++i) {
-            ieee754_float32_t const u = x[i];
+            float const u = x[i];
             int     v;
             if (u >= 1) {
                 v = INT_MAX;

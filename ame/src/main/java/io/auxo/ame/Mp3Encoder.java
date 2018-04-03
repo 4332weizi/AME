@@ -11,19 +11,15 @@ public class Mp3Encoder {
 
     public static class Options {
 
-        public InputOptions inputOptions;
-        public RawPcmInputOptions rawPcmInputOptions;
-        public OperationalOptions operationalOptions;
-        public CbrOptions cbrOptions;
-        public AbrOptions abrOptions;
-        public VbrOptions vbrOptions;
-        public Mp3HeaderStreamOptions mp3HeaderStreamOptions;
-        public FilterOptions filterOptions;
-        public Id3TagOptions id3TagOptions;
-
-        protected Options() {
-
-        }
+        private InputOptions inputOptions;
+        private RawPcmInputOptions rawPcmInputOptions;
+        private OperationalOptions operationalOptions;
+        private CbrOptions cbrOptions;
+        private AbrOptions abrOptions;
+        private VbrOptions vbrOptions;
+        private Mp3HeaderStreamOptions mp3HeaderStreamOptions;
+        private FilterOptions filterOptions;
+        private Id3TagOptions id3TagOptions;
 
         public Options addInputOptions(InputOptions inputOptions) {
             this.inputOptions = inputOptions;
@@ -68,42 +64,6 @@ public class Mp3Encoder {
         public Options addMP3HeaderStreamOptions(Mp3HeaderStreamOptions mp3HeaderStreamOptions) {
             this.mp3HeaderStreamOptions = mp3HeaderStreamOptions;
             return this;
-        }
-
-        public Mp3HeaderStreamOptions getMp3HeaderStreamOptions() {
-            return mp3HeaderStreamOptions;
-        }
-
-        public InputOptions getInputOptions() {
-            return inputOptions;
-        }
-
-        public RawPcmInputOptions getRawPcmInputOptions() {
-            return rawPcmInputOptions;
-        }
-
-        public OperationalOptions getOperationalOptions() {
-            return operationalOptions;
-        }
-
-        public CbrOptions getCbrOptions() {
-            return cbrOptions;
-        }
-
-        public AbrOptions getAbrOptions() {
-            return abrOptions;
-        }
-
-        public VbrOptions getVbrOptions() {
-            return vbrOptions;
-        }
-
-        public FilterOptions getFilterOptions() {
-            return filterOptions;
-        }
-
-        public Id3TagOptions getId3TagOptions() {
-            return id3TagOptions;
         }
     }
 

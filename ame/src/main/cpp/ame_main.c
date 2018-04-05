@@ -1,8 +1,10 @@
 #include <stdio.h>
 
 #ifdef STDC_HEADERS
+
 # include <stdlib.h>
 # include <string.h>
+
 #else
 # ifndef HAVE_STRCHR
 #  define strchr index
@@ -27,18 +29,12 @@ char *strchr(), *strrchr();
 #include "ame_main.h"
 #include "frontend/console.h"
 
-/* PLL 14/04/2000 */
-#if macintosh
-#include <console.h>
-#endif
-
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>
 #endif
 
 extern int lame_main(JNIEnv *env, lame_t gf, jstring input, jstring output, jobject options,
                      jobject callback);
-
 
 /************************************************************************
 *
@@ -62,7 +58,7 @@ char *lame_getenv(char const *var) {
 }
 
 int ame_main(JNIEnv *env, jstring input, jstring output, jobject options,
-                     jobject callback) {
+             jobject callback) {
 
     lame_t gf;
     int ret;

@@ -73,6 +73,7 @@ char   *strchr(), *strrchr();
 #include "../ame_main.h"
 #include "get_audio.h"
 #include "timestatus.h"
+#include "../jni_util.h"
 
 /* PLL 14/04/2000 */
 #if macintosh
@@ -534,7 +535,9 @@ lame_main(JNIEnv *env, lame_t gf, jstring input, jstring output, jobject options
           jobject callback){
 
     int     argc;
+    //char *in = parse_jstring(env,input);
     char    **argv;
+    //argv[1] = in;
 
     char    inPath[PATH_MAX + 1];
     char    outPath[PATH_MAX + 1];

@@ -37,7 +37,9 @@ jmethodID
 get_method_id(JNIEnv *env, char *className, char *methodName,
               char *signature) {
     jclass clazz = (*env)->FindClass(env, className);
-    return (*env)->GetMethodID(env, clazz, methodName, signature);
+    jmethodID methodID = (*env)->GetMethodID(env, clazz, methodName, signature);
+    (*env)->DeleteLocalRef(env, clazz);
+    return methodID;
 }
 
 jobject

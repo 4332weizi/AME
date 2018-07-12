@@ -1,4 +1,4 @@
-package io.auxo.ame;
+package io.auxo.ame.options;
 
 /**
  * ABR options:

@@ -1,5 +1,15 @@
 package io.auxo.ame;
 
+import io.auxo.ame.options.AbrOptions;
+import io.auxo.ame.options.CbrOptions;
+import io.auxo.ame.options.FilterOptions;
+import io.auxo.ame.options.Id3TagOptions;
+import io.auxo.ame.options.InputOptions;
+import io.auxo.ame.options.Mp3HeaderStreamOptions;
+import io.auxo.ame.options.OperationalOptions;
+import io.auxo.ame.options.RawPcmInputOptions;
+import io.auxo.ame.options.VbrOptions;
+
 /**
  * Mp3Encoder
  *

@@ -1,4 +1,4 @@
-package io.auxo.ame;
+package io.auxo.ame.options;
 
 /**
  * -b <bitrate>    set the bitrate in kbps, default 128 kbps
